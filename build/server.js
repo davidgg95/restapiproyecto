@@ -25,7 +25,7 @@ class Server {
         });
     }
     routes() {
-        this.app.use('/futbol', futbolRoutes_1.futbolRoutes);
+        this.app.use('/jugadores', futbolRoutes_1.futbolRoutes);
     }
     start() {
         this.app.listen(this.app.get('port'), () => {

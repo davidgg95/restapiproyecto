@@ -24,7 +24,7 @@ class Server {
     }
 
     private routes(){
-        this.app.use('/futbol', futbolRoutes)
+        this.app.use('/jugadores', futbolRoutes)
     }
 
     start(){
