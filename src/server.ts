@@ -24,7 +24,7 @@ class Server {
     }
 
     private routes(){
-        this.app.use('/api', futbolRoutes)
+        this.app.use('/futbol', futbolRoutes)
     }
 
     start(){

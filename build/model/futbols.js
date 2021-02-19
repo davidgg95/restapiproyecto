@@ -11,4 +11,4 @@ const jugadoresSchema = new mongoose_1.Schema({
     salario: Number,
     equipo: Number
 });
-exports.Futbols = mongoose_1.model('futbols', jugadoresSchema);
+exports.Futbols = mongoose_1.model('jugadores', jugadoresSchema);
