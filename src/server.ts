@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import { futbolRoutes } from './routes/futbolRoutes'
+import { equipoRoutes } from './routes/equipoRoutes'
 class Server {
     private app: express.Application
     constructor(){
@@ -24,7 +25,8 @@ class Server {
     }
 
     private routes(){
-        this.app.use('/jugadores', futbolRoutes)
+        this.app.use('/jugadores', futbolRoutes),
+        this.app.use('/equipos', equipoRoutes)
     }
 
     start(){

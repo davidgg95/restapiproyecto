@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const futbolRoutes_1 = require("./routes/futbolRoutes");
+const equipoRoutes_1 = require("./routes/equipoRoutes");
 class Server {
     constructor() {
         this.app = express_1.default();
@@ -25,7 +26,8 @@ class Server {
         });
     }
     routes() {
-        this.app.use('/jugadores', futbolRoutes_1.futbolRoutes);
+        this.app.use('/jugadores', futbolRoutes_1.futbolRoutes),
+            this.app.use('/equipos', equipoRoutes_1.equipoRoutes);
     }
     start() {
         this.app.listen(this.app.get('port'), () => {

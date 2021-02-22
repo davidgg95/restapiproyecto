@@ -51,6 +51,30 @@ db.jugadores.insertMany([
         salario: 300,
         equipo: 2,
     },
+    {
+        id: 9,
+        nombre: "Joaquin",
+        salario: 200,
+        equipo: 4
+    },
+    {
+        id: 10,
+        nombre: "Canales",
+        salario: 300,
+        equipo: 4,
+    },
+    {
+        id: 11,
+        nombre: "Negredo",
+        salario: 200,
+        equipo: 5,
+    },
+    {
+        id: 12,
+        nombre: "Cala",
+        salario: 150,
+        equipo: 5,
+    }
 ])
 
 db.equipos.drop()
@@ -59,18 +83,35 @@ db.equipos.insertMany([
         id: 1,
         nombre: "Barcelona",
         salario: 3000000,
+        titulos: true,
         f_club:new Date("1957-06-25")
     },
     {
         id: 2,
         nombre: "Madrid",
         salario: 2000000,
+        titulos: true,
         f_club:new Date("1927-08-30")
     },
     {
         id: 3,
         nombre: "Sevilla",
         salario: 1500000,
+        titulos: true,
         f_club:new Date("1905-10-14")
+    },
+    {
+        id: 4,
+        nombre: "Betis",
+        salario: 500000,
+        titulos: false,
+        f_club:new Date("1907-11-25")
+    },
+    {
+        id: 5,
+        nombre: "Cadiz",
+        salario: 500000,
+        titulos: false,
+        f_club:new Date("1957-06-04")
     }
 ])
