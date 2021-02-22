@@ -17,24 +17,18 @@ class FutbolesRoutes {
     constructor() {
         this.post = (req, res) => __awaiter(this, void 0, void 0, function* () {
             console.log(req.body);
-            const { nombre, salario, titulos, f_club } = req.body;
-            yield database_1.db.conectarBD();
-            const query = (yield equipos_1.Futbols.findOne({}, { id: 1, _id: 0 }).sort({ id: -1 }).limit(1));
-            let newId;
-            if (query == null) {
-                newId = 0;
-            }
-            else {
-                newId = query.id;
-            }
+            const { id, nombre, salario, titulos, f_club } = req.body;
+            console.log(id);
             const dSchema = {
-                id: newId + 1,
-                nombre: name,
-                salario: parseInt(salario),
-                titulos: parseInt(titulos),
-                f_club: parseInt(f_club),
+                id: id,
+                nombre: nombre,
+                salario: salario,
+                titulos: titulos,
+                f_club: f_club
             };
+            console.log(dSchema);
             const oSchema = new equipos_1.Futbols(dSchema);
+            yield database_1.db.conectarBD();
             yield oSchema.save()
                 .then((doc) => {
                 console.log('Salvado Correctamente: ' + doc);
@@ -93,10 +87,10 @@ class FutbolesRoutes {
         });
         this.put = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const { _nombre, salario, titulos, f_club } = req.body;
+            const { nombre, salario, titulos, f_club } = req.body;
             yield database_1.db.conectarBD();
             yield equipos_1.Futbols.findOneAndUpdate({ id: id }, {
-                name: name,
+                nombre: nombre,
                 salario: salario,
                 titulos: titulos,
                 f_club: f_club
@@ -106,7 +100,7 @@ class FutbolesRoutes {
             })
                 .then((docu) => {
                 if (docu == null) {
-                    console.log('El jugador que desea modificar no existe');
+                    console.log('El equipo que desea modificar no existe');
                     res.json({ "Error": "No existe: " + id });
                 }
                 else {

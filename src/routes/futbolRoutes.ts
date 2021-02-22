@@ -15,24 +15,19 @@ class FutbolesRoutes {
     private post = async (req: Request, res: Response) => {
         console.log(req.body)
         
-        const { nombre, salario, equipo } = req.body
+        const { id, nombre, salario, equipo } = req.body
 
-        await db.conectarBD()
-        
-        const query: any = ( await Futbols.findOne({},{id:1,_id:0}).sort({id: -1}).limit(1) )
-        let newId: number
-        if (query == null){
-            newId = 0
-        }else{
-            newId = query.id
-        }
+        console.log(id)
+
         const dSchema = {
-            id: newId+1,
-            nombre: name,
-            salario: parseInt(salario),
-            equipo: parseInt(equipo),
+            id: id,
+            nombre: nombre,
+            salario: salario,
+            equipo: equipo
         }
+        console.log(dSchema)
         const oSchema = new Futbols(dSchema)
+        await db.conectarBD()
         await oSchema.save()
         .then( (doc) => {
             console.log('Salvado Correctamente: '+ doc)
@@ -42,9 +37,8 @@ class FutbolesRoutes {
             console.log('Error: '+ err)
             res.send('Error: '+ err)
         }) 
-       
         await db.desconectarBD()
-    } 
+    }   
 
 
     private delete = async (req: Request, res: Response) => {

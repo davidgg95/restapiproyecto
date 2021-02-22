@@ -17,23 +17,17 @@ class FutbolesRoutes {
     constructor() {
         this.post = (req, res) => __awaiter(this, void 0, void 0, function* () {
             console.log(req.body);
-            const { nombre, salario, equipo } = req.body;
-            yield database_1.db.conectarBD();
-            const query = (yield futbols_1.Futbols.findOne({}, { id: 1, _id: 0 }).sort({ id: -1 }).limit(1));
-            let newId;
-            if (query == null) {
-                newId = 0;
-            }
-            else {
-                newId = query.id;
-            }
+            const { id, nombre, salario, equipo } = req.body;
+            console.log(id);
             const dSchema = {
-                id: newId + 1,
-                nombre: name,
-                salario: parseInt(salario),
-                equipo: parseInt(equipo),
+                id: id,
+                nombre: nombre,
+                salario: salario,
+                equipo: equipo
             };
+            console.log(dSchema);
             const oSchema = new futbols_1.Futbols(dSchema);
+            yield database_1.db.conectarBD();
             yield oSchema.save()
                 .then((doc) => {
                 console.log('Salvado Correctamente: ' + doc);

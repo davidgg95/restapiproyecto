@@ -15,25 +15,21 @@ class FutbolesRoutes {
     private post = async (req: Request, res: Response) => {
         console.log(req.body)
         
-        const { nombre, salario, titulos, f_club } = req.body
+        const { id, nombre, salario, titulos, f_club } = req.body
 
-        await db.conectarBD()
-        
-        const query: any = ( await Futbols.findOne({},{id:1,_id:0}).sort({id: -1}).limit(1) )
-        let newId: number
-        if (query == null){
-            newId = 0
-        }else{
-            newId = query.id
-        }
+        console.log(id)
+
         const dSchema = {
-            id: newId+1,
-            nombre: name,
-            salario: parseInt(salario),
-            titulos: parseInt(titulos),
-            f_club: parseInt(f_club),
+            id: id,
+            nombre: nombre,
+            salario: salario,
+            titulos: titulos,
+            f_club: f_club
+
         }
+        console.log(dSchema)
         const oSchema = new Futbols(dSchema)
+        await db.conectarBD()
         await oSchema.save()
         .then( (doc) => {
             console.log('Salvado Correctamente: '+ doc)
@@ -43,9 +39,8 @@ class FutbolesRoutes {
             console.log('Error: '+ err)
             res.send('Error: '+ err)
         }) 
-       
         await db.desconectarBD()
-    } 
+    }   
 
 
     private delete = async (req: Request, res: Response) => {
@@ -104,12 +99,12 @@ class FutbolesRoutes {
 
     private put = async (req: Request, res: Response) => {
         const { id } = req.params
-        const { _nombre, salario, titulos, f_club } = req.body
+        const { nombre, salario, titulos, f_club } = req.body
         await db.conectarBD()
         await Futbols.findOneAndUpdate(
                 { id: id}, 
                 {
-                    name: name,
+                    nombre: nombre,
                     salario: salario,
                     titulos: titulos,
                     f_club: f_club
@@ -121,7 +116,7 @@ class FutbolesRoutes {
             )
             .then( (docu: any) => {
                     if (docu==null){
-                        console.log('El jugador que desea modificar no existe')
+                        console.log('El equipo que desea modificar no existe')
                         res.json({"Error":"No existe: " + id})
                     } else {
                         console.log('Modificado Correctamente: '+ docu) 
