@@ -86,10 +86,10 @@ class FutbolesRoutes {
         });
         this.put = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const { _nombre, salario, equipo } = req.body;
+            const { nombre, salario, equipo } = req.body;
             yield database_1.db.conectarBD();
             yield futbols_1.Futbols.findOneAndUpdate({ id: id }, {
-                name: name,
+                nombre: nombre,
                 salario: salario,
                 equipo: equipo
             }, {

@@ -97,12 +97,12 @@ class FutbolesRoutes {
 
     private put = async (req: Request, res: Response) => {
         const { id } = req.params
-        const { _nombre, salario, equipo } = req.body
+        const { nombre, salario, equipo } = req.body
         await db.conectarBD()
         await Futbols.findOneAndUpdate(
                 { id: id}, 
                 {
-                    name: name,
+                    nombre: nombre,
                     salario: salario,
                     equipo: equipo
                 },
