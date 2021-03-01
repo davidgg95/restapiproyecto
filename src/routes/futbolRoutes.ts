@@ -50,36 +50,25 @@ class FutbolesRoutes {
     }
 
 
-    private post = async (req: Request, res: Response) => {
-        console.log(req.body)
+    private postJugadores = async (req: Request, res: Response) => {
         
         const { id, nombre, salario, equipo } = req.body
-
-        console.log(id)
-
+        await db.conectarBD()
         const dSchema = {
             id: id,
             nombre: nombre,
             salario: salario,
             equipo: equipo
         }
-        console.log(dSchema)
         const oSchema = new Futbols(dSchema)
-        await db.conectarBD()
         await oSchema.save()
-        .then( (doc) => {
-            console.log('Salvado Correctamente: '+ doc)
-            res.json(doc)
-        })
-        .catch( (err: any) => {
-            console.log('Error: '+ err)
-            res.send('Error: '+ err)
-        }) 
+        .then( (doc) => res.send(doc))
+        .catch( (err: any) => res.send('Error: ' + err))  
         await db.desconectarBD()
     }   
 
 
-    private delete = async (req: Request, res: Response) => {
+    private deleteJugador = async (req: Request, res: Response) => {
         const { id } = req.params
         await db.conectarBD()
         await Futbols.findOneAndDelete( { id: id })
@@ -133,7 +122,7 @@ class FutbolesRoutes {
         db.desconectarBD()
     }
 
-    private put = async (req: Request, res: Response) => {
+    private updateJugadores = async (req: Request, res: Response) => {
         const { id } = req.params
         const { nombre, salario, equipo } = req.body
         await db.conectarBD()
@@ -171,9 +160,9 @@ class FutbolesRoutes {
     misRutas(){
         this._router.get('/', this.get)
         this._router.get('/:id', this.getId)
-        this._router.get('/borrar/:id', this.delete)
-        this._router.post('/', this.post)
-        this._router.put('/:id', this.put) 
+        this._router.get('/borrar/:id', this.deleteJugador)
+        this._router.post('/', this.postJugadores)
+        this._router.post('/actualizar/:id', this.updateJugadores) 
         this._router.get('/getEquipos', this.getEquipos)
         this._router.get('/getJugadores', this.getJugadores)
     }

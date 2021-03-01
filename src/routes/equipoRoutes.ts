@@ -12,13 +12,10 @@ class EquiposRoutes {
         return this._router
     }
 
-    private post = async (req: Request, res: Response) => {
-        console.log(req.body)
+    private postEquipo = async (req: Request, res: Response) => {
         
         const { id, nombre, salario, titulos, f_club } = req.body
-
-        console.log(id)
-
+        await db.conectarBD()
         const dSchema = {
             id: id,
             nombre: nombre,
@@ -27,18 +24,10 @@ class EquiposRoutes {
             f_club: f_club
 
         }
-        console.log(dSchema)
         const oSchema = new Equipos(dSchema)
-        await db.conectarBD()
         await oSchema.save()
-        .then( (doc) => {
-            console.log('Salvado Correctamente: '+ doc)
-            res.json(doc)
-        })
-        .catch( (err: any) => {
-            console.log('Error: '+ err)
-            res.send('Error: '+ err)
-        }) 
+        .then( (doc) => res.send(doc))
+        .catch( (err: any) => res.send('Error: ' + err)) 
         await db.desconectarBD()
     }   
 
@@ -97,7 +86,7 @@ class EquiposRoutes {
         db.desconectarBD()
     }
 
-    private put = async (req: Request, res: Response) => {
+    private updateEquipo = async (req: Request, res: Response) => {
         const { id } = req.params
         const { nombre, salario, titulos, f_club } = req.body
         await db.conectarBD()
@@ -137,8 +126,8 @@ class EquiposRoutes {
         this._router.get('/', this.get)
         this._router.get('/:id', this.getId)
         this._router.get('/borrar/:id', this.delete)
-        this._router.post('/', this.post)
-        this._router.put('/:id', this.put)
+        this._router.post('/', this.postEquipo)
+        this._router.post('/actualizar/:id', this.updateEquipo)
     }
 }
 

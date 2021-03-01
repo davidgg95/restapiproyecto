@@ -15,10 +15,9 @@ const equipos_1 = require("../model/equipos");
 const database_1 = require("../database/database");
 class EquiposRoutes {
     constructor() {
-        this.post = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            console.log(req.body);
+        this.postEquipo = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { id, nombre, salario, titulos, f_club } = req.body;
-            console.log(id);
+            yield database_1.db.conectarBD();
             const dSchema = {
                 id: id,
                 nombre: nombre,
@@ -26,18 +25,10 @@ class EquiposRoutes {
                 titulos: titulos,
                 f_club: f_club
             };
-            console.log(dSchema);
             const oSchema = new equipos_1.Equipos(dSchema);
-            yield database_1.db.conectarBD();
             yield oSchema.save()
-                .then((doc) => {
-                console.log('Salvado Correctamente: ' + doc);
-                res.json(doc);
-            })
-                .catch((err) => {
-                console.log('Error: ' + err);
-                res.send('Error: ' + err);
-            });
+                .then((doc) => res.send(doc))
+                .catch((err) => res.send('Error: ' + err));
             yield database_1.db.desconectarBD();
         });
         this.delete = (req, res) => __awaiter(this, void 0, void 0, function* () {
@@ -85,7 +76,7 @@ class EquiposRoutes {
             });
             database_1.db.desconectarBD();
         });
-        this.put = (req, res) => __awaiter(this, void 0, void 0, function* () {
+        this.updateEquipo = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             const { nombre, salario, titulos, f_club } = req.body;
             yield database_1.db.conectarBD();
@@ -123,8 +114,8 @@ class EquiposRoutes {
         this._router.get('/', this.get);
         this._router.get('/:id', this.getId);
         this._router.get('/borrar/:id', this.delete);
-        this._router.post('/', this.post);
-        this._router.put('/:id', this.put);
+        this._router.post('/', this.postEquipo);
+        this._router.post('/actualizar/:id', this.updateEquipo);
     }
 }
 const obj = new EquiposRoutes();

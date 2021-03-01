@@ -49,31 +49,22 @@ class FutbolesRoutes {
             });
             yield database_1.db.desconectarBD();
         });
-        this.post = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            console.log(req.body);
+        this.postJugadores = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { id, nombre, salario, equipo } = req.body;
-            console.log(id);
+            yield database_1.db.conectarBD();
             const dSchema = {
                 id: id,
                 nombre: nombre,
                 salario: salario,
                 equipo: equipo
             };
-            console.log(dSchema);
             const oSchema = new futbols_1.Futbols(dSchema);
-            yield database_1.db.conectarBD();
             yield oSchema.save()
-                .then((doc) => {
-                console.log('Salvado Correctamente: ' + doc);
-                res.json(doc);
-            })
-                .catch((err) => {
-                console.log('Error: ' + err);
-                res.send('Error: ' + err);
-            });
+                .then((doc) => res.send(doc))
+                .catch((err) => res.send('Error: ' + err));
             yield database_1.db.desconectarBD();
         });
-        this.delete = (req, res) => __awaiter(this, void 0, void 0, function* () {
+        this.deleteJugador = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             yield database_1.db.conectarBD();
             yield futbols_1.Futbols.findOneAndDelete({ id: id })
@@ -118,7 +109,7 @@ class FutbolesRoutes {
             });
             database_1.db.desconectarBD();
         });
-        this.put = (req, res) => __awaiter(this, void 0, void 0, function* () {
+        this.updateJugadores = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             const { nombre, salario, equipo } = req.body;
             yield database_1.db.conectarBD();
@@ -154,9 +145,9 @@ class FutbolesRoutes {
     misRutas() {
         this._router.get('/', this.get);
         this._router.get('/:id', this.getId);
-        this._router.get('/borrar/:id', this.delete);
-        this._router.post('/', this.post);
-        this._router.put('/:id', this.put);
+        this._router.get('/borrar/:id', this.deleteJugador);
+        this._router.post('/', this.postJugadores);
+        this._router.post('/actualizar/:id', this.updateJugadores);
         this._router.get('/getEquipos', this.getEquipos);
         this._router.get('/getJugadores', this.getJugadores);
     }
