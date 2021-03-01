@@ -136,7 +136,7 @@ class EquiposRoutes {
     misRutas(){
         this._router.get('/', this.get)
         this._router.get('/:id', this.getId)
-        this._router.delete('/:id', this.delete)
+        this._router.get('/borrar/:id', this.delete)
         this._router.post('/', this.post)
         this._router.put('/:id', this.put)
     }
