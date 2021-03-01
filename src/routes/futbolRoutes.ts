@@ -1,5 +1,6 @@
 import {Request, Response, Router } from 'express'
-import { Futbols, jugadores } from '../model/futbols'
+import { Futbols } from '../model/futbols'
+import { Equipos } from '../model/equipos'
 import { db } from '../database/database'
 
 class FutbolesRoutes {
@@ -11,6 +12,43 @@ class FutbolesRoutes {
     get router(){
         return this._router
     }
+
+    private getEquipos = async (req:Request, res: Response) => {
+        await db.conectarBD()
+        .then( async ()=> {
+            const query = await Equipos.aggregate([
+                {
+                    $lookup: {
+                        from: 'jugadores',
+                        localField: 'id',
+                        foreignField: 'equipo',
+                        as: "equipos"
+                    }
+                }
+            ])
+            res.json(query)
+        })
+        .catch((mensaje) => {
+            res.send(mensaje)
+        })
+        await db.desconectarBD()
+    }
+
+    private getJugadores = async (req:Request, res: Response) => {
+        await db.conectarBD()
+        .then( async ()=> {
+            const query = await Futbols.aggregate([
+                {$match:{ "salario":{$gte:1500}}}
+            
+            ])
+            res.json(query)
+        })
+        .catch((mensaje) => {
+            res.send(mensaje)
+        })
+        await db.desconectarBD()
+    }
+
 
     private post = async (req: Request, res: Response) => {
         console.log(req.body)
@@ -135,7 +173,9 @@ class FutbolesRoutes {
         this._router.get('/:id', this.getId)
         this._router.delete('/:id', this.delete)
         this._router.post('/', this.post)
-        this._router.put('/:id', this.put)
+        this._router.put('/:id', this.put) 
+        this._router.get('/getEquipos', this.getEquipos)
+        this._router.get('/getJugadores', this.getJugadores)
     }
 }
 

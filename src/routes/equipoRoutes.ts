@@ -1,8 +1,8 @@
 import {Request, Response, Router } from 'express'
-import { Futbols, equipos } from '../model/equipos'
+import { Equipos } from '../model/equipos'
 import { db } from '../database/database'
 
-class FutbolesRoutes {
+class EquiposRoutes {
     private _router: Router
 
     constructor() {
@@ -28,7 +28,7 @@ class FutbolesRoutes {
 
         }
         console.log(dSchema)
-        const oSchema = new Futbols(dSchema)
+        const oSchema = new Equipos(dSchema)
         await db.conectarBD()
         await oSchema.save()
         .then( (doc) => {
@@ -46,7 +46,7 @@ class FutbolesRoutes {
     private delete = async (req: Request, res: Response) => {
         const { id } = req.params
         await db.conectarBD()
-        await Futbols.findOneAndDelete( { id: id })
+        await Equipos.findOneAndDelete( { id: id })
         .then(
             (doc: any) => {
                 console.log(doc)
@@ -59,7 +59,7 @@ class FutbolesRoutes {
         .then( async (mensaje) => {
             console.log(mensaje)
             console.log('Haciendo el query')
-            const query = await Futbols.find()
+            const query = await Equipos.find()
             console.log('Después del query')
             console.log(query)
             res.json(query)
@@ -75,7 +75,7 @@ class FutbolesRoutes {
     private getId = async (req: Request, res: Response) => {
         const { id } = req.params
         await db.conectarBD()
-        await Futbols.findOne(
+        await Equipos.findOne(
                 { id: id }
             )
             .then( (docu: any) => {
@@ -101,7 +101,7 @@ class FutbolesRoutes {
         const { id } = req.params
         const { nombre, salario, titulos, f_club } = req.body
         await db.conectarBD()
-        await Futbols.findOneAndUpdate(
+        await Equipos.findOneAndUpdate(
                 { id: id}, 
                 {
                     nombre: nombre,
@@ -142,6 +142,6 @@ class FutbolesRoutes {
     }
 }
 
-const obj = new FutbolesRoutes()
+const obj = new EquiposRoutes()
 obj.misRutas()
 export const equipoRoutes = obj.router

@@ -26,4 +26,4 @@ const equiposSchema = new Schema({
 
 
 
-export const Futbols = model('equipos', equiposSchema)
+export const Equipos = model('equipos', equiposSchema)

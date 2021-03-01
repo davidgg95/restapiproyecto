@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Futbols = void 0;
+exports.Equipos = void 0;
 const mongoose_1 = require("mongoose");
 const equiposSchema = new mongoose_1.Schema({
     id: {
@@ -12,4 +12,4 @@ const equiposSchema = new mongoose_1.Schema({
     titulos: Boolean,
     f_club: Date,
 });
-exports.Futbols = mongoose_1.model('equipos', equiposSchema);
+exports.Equipos = mongoose_1.model('equipos', equiposSchema);

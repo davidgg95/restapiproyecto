@@ -12,9 +12,43 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.futbolRoutes = void 0;
 const express_1 = require("express");
 const futbols_1 = require("../model/futbols");
+const equipos_1 = require("../model/equipos");
 const database_1 = require("../database/database");
 class FutbolesRoutes {
     constructor() {
+        this.getEquipos = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            yield database_1.db.conectarBD()
+                .then(() => __awaiter(this, void 0, void 0, function* () {
+                const query = yield equipos_1.Equipos.aggregate([
+                    {
+                        $lookup: {
+                            from: 'jugadores',
+                            localField: 'id',
+                            foreignField: 'equipo',
+                            as: "equipos"
+                        }
+                    }
+                ]);
+                res.json(query);
+            }))
+                .catch((mensaje) => {
+                res.send(mensaje);
+            });
+            yield database_1.db.desconectarBD();
+        });
+        this.getJugadores = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            yield database_1.db.conectarBD()
+                .then(() => __awaiter(this, void 0, void 0, function* () {
+                const query = yield futbols_1.Futbols.aggregate([
+                    { $match: { "salario": { $gte: 1500 } } }
+                ]);
+                res.json(query);
+            }))
+                .catch((mensaje) => {
+                res.send(mensaje);
+            });
+            yield database_1.db.desconectarBD();
+        });
         this.post = (req, res) => __awaiter(this, void 0, void 0, function* () {
             console.log(req.body);
             const { id, nombre, salario, equipo } = req.body;
@@ -123,6 +157,8 @@ class FutbolesRoutes {
         this._router.delete('/:id', this.delete);
         this._router.post('/', this.post);
         this._router.put('/:id', this.put);
+        this._router.get('/getEquipos', this.getEquipos);
+        this._router.get('/getJugadores', this.getJugadores);
     }
 }
 const obj = new FutbolesRoutes();

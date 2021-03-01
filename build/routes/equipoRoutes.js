@@ -13,7 +13,7 @@ exports.equipoRoutes = void 0;
 const express_1 = require("express");
 const equipos_1 = require("../model/equipos");
 const database_1 = require("../database/database");
-class FutbolesRoutes {
+class EquiposRoutes {
     constructor() {
         this.post = (req, res) => __awaiter(this, void 0, void 0, function* () {
             console.log(req.body);
@@ -27,7 +27,7 @@ class FutbolesRoutes {
                 f_club: f_club
             };
             console.log(dSchema);
-            const oSchema = new equipos_1.Futbols(dSchema);
+            const oSchema = new equipos_1.Equipos(dSchema);
             yield database_1.db.conectarBD();
             yield oSchema.save()
                 .then((doc) => {
@@ -43,7 +43,7 @@ class FutbolesRoutes {
         this.delete = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             yield database_1.db.conectarBD();
-            yield equipos_1.Futbols.findOneAndDelete({ id: id })
+            yield equipos_1.Equipos.findOneAndDelete({ id: id })
                 .then((doc) => {
                 console.log(doc);
             });
@@ -54,7 +54,7 @@ class FutbolesRoutes {
                 .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
                 console.log(mensaje);
                 console.log('Haciendo el query');
-                const query = yield equipos_1.Futbols.find();
+                const query = yield equipos_1.Equipos.find();
                 console.log('Después del query');
                 console.log(query);
                 res.json(query);
@@ -68,7 +68,7 @@ class FutbolesRoutes {
         this.getId = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             yield database_1.db.conectarBD();
-            yield equipos_1.Futbols.findOne({ id: id })
+            yield equipos_1.Equipos.findOne({ id: id })
                 .then((docu) => {
                 if (docu == null) {
                     console.log('El documento que desea modificar no existe');
@@ -89,7 +89,7 @@ class FutbolesRoutes {
             const { id } = req.params;
             const { nombre, salario, titulos, f_club } = req.body;
             yield database_1.db.conectarBD();
-            yield equipos_1.Futbols.findOneAndUpdate({ id: id }, {
+            yield equipos_1.Equipos.findOneAndUpdate({ id: id }, {
                 nombre: nombre,
                 salario: salario,
                 titulos: titulos,
@@ -127,6 +127,6 @@ class FutbolesRoutes {
         this._router.put('/:id', this.put);
     }
 }
-const obj = new FutbolesRoutes();
+const obj = new EquiposRoutes();
 obj.misRutas();
 exports.equipoRoutes = obj.router;
